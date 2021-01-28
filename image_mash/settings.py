@@ -26,7 +26,7 @@ SECRET_KEY = 'swmg^1*ck6h6grl-bqza%#ic_%8dmsfyinwi!a6$)n*^tw)@g!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["album-art-gen.herokuapp.com", "http://localhost:3000/"]
 
 
 # Application definition
