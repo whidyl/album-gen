@@ -15,3 +15,4 @@ requests==2.25.1
 scipy==1.5.4
 sqlparse==0.4.1
 urllib3==1.26.3
+whitenoise==5.2.0
