@@ -3,7 +3,7 @@ import logging
 from django.views.generic import View
 from django.http import HttpResponse
 from django.conf import settings
-import osso
+import os
 
 # Create your views here.
 class FrontendView(View):
