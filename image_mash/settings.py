@@ -26,7 +26,7 @@ SECRET_KEY = 'swmg^1*ck6h6grl-bqza%#ic_%8dmsfyinwi!a6$)n*^tw)@g!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["album-art-gen.herokuapp.com", "http://localhost:3000/"]
+ALLOWED_HOSTS = ["album-art-gen.herokuapp.com", "127.0.0.1"]
 
 
 # Application definition
@@ -131,8 +131,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend', 'react_frontend')
 
-STATICFILES_DIRS = ()#[
-#    os.path.join(REACT_APP_DIR, 'build', 'static'),
-#]
+STATICFILES_DIRS = [
+    os.path.join(REACT_APP_DIR, 'build', 'static'),
+]
 
 CSRF_COOKIE_SECURE = False
