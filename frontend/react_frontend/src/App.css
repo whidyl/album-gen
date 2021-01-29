@@ -1,0 +1,131 @@
+
+#bootstrap-overrides {
+  background-color: rgb(255, 255, 255);
+}
+
+#bootstrap-overrides .image-card {
+  border-radius: 10px;
+  box-shadow: -3px 9px 27px -9px rgba(0, 0, 0, 0.308);
+  display: flex;
+}
+
+#site-title {
+  text-align: center;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ;
+  color: rgb(66, 66, 66);
+}
+
+.btn-secondary {
+  width: 40px;
+  float: right;
+  margin-left: 8px;
+}
+
+.btn-dark {
+  color: rgb(255, 255, 255);
+  width: 40px;
+  height: 40px;
+  float:left;
+  margin-left: 20px;
+  margin-top: 27px;
+}
+
+.image-card {
+  margin-left: 14px;
+  margin-top: 14px;
+  width: 284px;
+  height: 284px;
+  float: left;
+}
+
+.card-horizontal {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+#bootstrap-overrides .image-container {
+  margin-top: 40px;
+  border-radius: 10px;
+  width: 500px;
+}
+
+.container-fluid {
+  display: inline-block;
+}
+
+.fade-out {
+  opacity: 1;
+  animation: fade-out 0.3s forwards;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fade-in 0.5s forwards;
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    margin-left: 14px;
+  }
+
+  50% {
+    opacity: 0;
+    margin-left: 14px;
+  }
+
+  100% {
+    opacity: 0;
+    margin-left: -250px;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+
+label {
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.selector {
+  width: auto;
+  margin-left: 10px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+#bootstrap-overrides .card-body {
+  padding: 25px 40px;
+}
+
+#bootstrap-overrides .btn-light {
+  background-color: rgb(230, 230, 230);
+  float: left;
+  margin-right: 10px;
+  margin-top: 10px;
+  font-size: 15px;
+  width: 120px;
+}
+
+.MuiTypography-subtitle1 {
+  margin-right: 10px;
+}
+
+.randomize-buttons {
+  float:left;
+}
