@@ -5,27 +5,43 @@ import requests
 import json
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 import blend_modes
-#from scipy import ndimage
 import numpy as np
 
 def make_blend(JSON):
     print(JSON)
     width = JSON['settings']['width']
     height = JSON['settings']['height']
+    featured = JSON['settings']['featured_only']
 
     
     if(JSON['cards']):
-        url = 'https://source.unsplash.com/featured/' + str(width) + 'x' + str(height) + '/?' + JSON['cards'][0]['term']
-        prev_img = Image.open("api/utils/background.jpg").resize((int(width/2), int(height/2)))
+        featured_str = "featured/" if featured else "random/"
+        size_str =  str(width) + 'x' + str(height) + '/' if width > 0 else ""
+        terms_str = "?" + JSON['cards'][0]['term'].replace(' ', '-') + '/'
+        url = "https://source.unsplash.com/" + featured_str + size_str + terms_str
+
+        prev_img = None
+        if width > 0:
+            prev_img = Image.open("api/utils/background.jpg").resize((int(width), int(height)))
+        else:
+            prev_img = Image.open("api/utils/background.jpg").resize((1280, 1280))
+        prev_img = filter_pil(JSON['cards'][0]['filter'], prev_img)
         prev_img = np.array(prev_img)
         prev_img = np.dstack((prev_img, np.full(prev_img.shape[:-1], 255)))
         prev_img = prev_img.astype(float)
         blended = prev_img
         for card in JSON['cards']:
             # fetch random image with unsplash api
-            url = 'https://source.unsplash.com/random/' + str(width) + 'x' + str(height) + '/?' + card['term']
+            terms_str = "?" + card['term'].replace(' ', '-')
+            url = "https://source.unsplash.com/" + featured_str + size_str + terms_str
+            print(url)
             response = requests.get(url)
-            img = Image.open(BytesIO(response.content)).resize((int(width/2), int(height/2)))
+            img = Image.open(BytesIO(response.content))
+            if width > 0:
+                img = img.resize((int(width), int(height)))
+            else:
+                img = img.resize((1280, 1280))
+            img = filter_pil(card['filter'], img)
             img = np.array(img)
             img = np.dstack((img, np.full(img.shape[:-1], 255)))
             img = img.astype(float)
@@ -33,40 +49,6 @@ def make_blend(JSON):
             prev_img = blended  
         blended_raw = Image.fromarray(blended.astype(np.uint8))
         blended_raw.save("generated.png")
-
-        
-    # url = 'https://source.unsplash.com/random/' + width + 'x' + height + '/?' + str(query1)
-    # response = requests.get(url)
-    # img_1 = Image.open(BytesIO(response.content)).resize((int(width), int(height)))
-    # img_1 = numpy.array(img_1)
-    # img_1 = numpy.dstack((img_1, numpy.full(img_1.shape[:-1], 255)))
-    # img_1 = img_1.astype(float)
-
-    # url = 'https://source.unsplash.com/random/' + width + 'x' + height + '/?' + str(query2)
-    # response = requests.get(url)
-    # img_2 = Image.open(BytesIO(response.content)).resize((int(width), int(height)))
-    # img_2 = numpy.array(img_2)
-    # img_2 = numpy.dstack((img_2, numpy.full(img_2.shape[:-1], 255)))
-    # img_2 = img_2.astype(float)
-
-    # url = 'https://source.unsplash.com/random/' + width + 'x' + height + '/?' + str(query3)
-    # response = requests.get(url)
-    # img_3 = Image.open(BytesIO(response.content)).resize((int(width), int(height)))
-    # img_3 = numpy.array(img_3)
-    # img_3 = numpy.dstack((img_3, numpy.full(img_2.shape[:-1], 255)))
-    # img_3 = img_3.astype(float)
-
-    # # overlay images with blend modes
-    # blend = blend_images(opacity2, current_blend_mode_1.get(), img_1, img_2)
-    # blend = blend_images(opacity3, current_blend_mode_2.get(), blend, img_3)
-
-    # # apply filters
-    # blend = filter_np(current_filter_1.get(), blend)
-    # blend = numpy.uint8(blend)
-    # blended_raw = Image.fromarray(blend)
-    # blended_raw = filter_pil(current_filter_1.get(), blended_raw)
-    # blended_raw = filter_pil(current_filter_2.get(), blended_raw)
-    # blended_raw.show()
 
 def blend_images(opacity, mode, img_1, img_2):
     if opacity > 0:
@@ -103,24 +85,6 @@ def blend_images(opacity, mode, img_1, img_2):
     else:
         return img_1
 
-
-def filter_np(filter, img):
-    if filter == "Laplace":
-        return ndimage.laplace(img)
-    elif filter == "Gaussian Greyscale":
-        return ndimage.gaussian_filter(img, sigma=1)
-    elif filter == "Sobel":
-        return ndimage.sobel(img)
-    elif filter == "Bright":
-        return 3 * img
-    elif filter == "*10":
-        return 10 * img
-    elif filter == "Grayscale":
-        return numpy.dot(img[..., :3], [0.2989, 0.5870, 0.1140])
-    else:
-        return img
-
-
 def filter_pil(filter, img):
     if filter == "Invert":
         return ImageOps.invert(img.convert('RGB'))
@@ -146,6 +110,6 @@ def filter_pil(filter, img):
         lightener = ImageEnhance.Brightness(img)
         return lightener.enhance(3)
     elif filter == "Find Edges":
-        return img.convert("L").filter(ImageFilter.FIND_EDGES)
+        return img.filter(ImageFilter.FIND_EDGES)
     else:
         return img

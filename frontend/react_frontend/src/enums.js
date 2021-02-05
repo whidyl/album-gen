@@ -17,17 +17,35 @@ export const BlendingModeEnum = {
 
   
 export const FilterEnum = {
-  BRIGHT: "Bright", 
-  BLACK_AND_WHITE: "blackAndWhite", 
-  EDGE_DETECTOR: "edgeDetector", 
-  NONE: "none"
+  INVERT: "Invert", 
+  POSTERIZE: "Posterize", 
+  POSTERIZE2: "Posterize 2", 
+  SOLARIZE: "Solarize",
+  EMBOSS: "Emboss",
+  GAUSSIAN: "Gaussian Blur",
+  FIND_EDGES: "Find Edges",
+  NONE: "None"
 };
 
 export const SizeEnum = {
   _1280x1280: "1280x1280", 
   _1024x768: "1024x768", 
-  _768x1024: "768x1024", 
+  _768x1024: "768x1024",
+  _1600x900: "1600x900",
+  none: "any"
 };
+
+export const goodSearchTerms = ['fire', 'lightning', 'rapper', 'explosion', 'abstract', 'painting', 'portrait', 'aesthetic',
+'rainbow', 'colorful', 'texture', 'landscape', 'trees', 'nature texture', 'fire-texture', 'crowd',
+'architecture', 'industrial', 'fractal', 'aesthetic texture', 'stunning space', 'psychedelic',
+'abstract dark', 'wallpaper', 'light streaks', 'gradient', 'overlay texture', 'sunset', 'sky',
+'water texture', 'statue', 'urban', 'floral',
+'streetwear', 'wildlife', 'cyberpunk', 'night city', 'liquid', 'fireworks', 'galaxy', 'spider web',
+'pattern', 'fabric', 'microscopic', 'stars', 'jellyfish', 'optical illusion', 'lightning storm',
+'waterfall', 'grunge', 'incredible view', 'festival night', 'fire breather', 'iridescent sky',
+'abstract wallpaper', 'ice', 'fractal patterns', 'flower', 'bikini', 'earth', 'shark',
+'reptile eye', 'bokeh', 'light show', 'drawing', 'black and white',
+'purple', 'white', 'black']
 
 Object.freeze(BlendingModeEnum);
 Object.freeze(FilterEnum);

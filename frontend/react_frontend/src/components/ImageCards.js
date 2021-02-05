@@ -21,7 +21,7 @@ class ImageCards extends Component {
                     delCard={this.props.delCard}
                     />
             ))}
-            <button className="btn btn-dark" onClick={this.props.newCard}>+</button>
+            <button className="btn btn-dark" onClick={this.props.newCard} disabled={this.props.cards.length >= 8}>+</button>
             </div>
         );
     }

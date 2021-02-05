@@ -2,18 +2,17 @@ import './App.css';
 import ImageCards from './components/ImageCards';
 import ImageMenu from './components/ImageMenu';
 import React, { Component } from 'react';
-import { BlendingModeEnum, FilterEnum } from './enums.js';
+import { BlendingModeEnum, FilterEnum, goodSearchTerms } from './enums.js';
 import {v4 as uuid} from 'uuid';
-
 
 class App extends Component {
   state = {
     cards: [
       {
         id: 1,
-        term: 'Sunset',
-        mode: BlendingModeEnum.MULTIPLY,
-        filter: FilterEnum.EDGE_DETECTOR,
+        term: 'Sunset Landscape',
+        mode: BlendingModeEnum.NONE,
+        filter: FilterEnum.NONE,
         opacity: 1,
         fadeOut: false,
         fadeIn: false
@@ -21,10 +20,20 @@ class App extends Component {
 
       {
         id: 2,
-        term: 'Snow',
-        mode: BlendingModeEnum.NONE,
-        filter: FilterEnum.BLACK_AND_WHITE,
-        opacity: 0.15,
+        term: 'Fireworks',
+        mode: BlendingModeEnum.SCREEN,
+        filter: FilterEnum.NONE,
+        opacity: 1,
+        fadeOut: false,
+        fadeIn: false
+      },
+
+      {
+        id: 3,
+        term: 'Gradient',
+        mode: BlendingModeEnum.OVERLAY,
+        filter: FilterEnum.NONE,
+        opacity: 0.7,
         fadeOut: false,
         fadeIn: false
       }
@@ -33,8 +42,48 @@ class App extends Component {
     settings: {
       width: 1280,
       height: 1280,
+      featured_only: true,
+      generating: false,
       b64src: ""
     }
+  }
+
+  toggleFeatured = () => {
+    this.setState({settings: { ...this.state.settings, featured_only: !this.state.settings.featured_only}})
+  }
+
+  randomizeTerms = () => {
+    this.setState({ cards: this.state.cards.map(card => {
+      card.term = goodSearchTerms[Math.floor(Math.random() * goodSearchTerms.length)];
+      return card
+    })})
+  }
+
+  randomizeModes = () => {
+    this.setState({ cards: this.state.cards.map(card => {
+      const vals = Object.values(BlendingModeEnum);
+      card.mode = vals[Math.floor(Math.random() * vals.length)];
+      return card
+    })})
+  }
+
+  changeSize = (e) => {
+    var width_change, height_change;
+    width_change = height_change = 1280;
+    if (e.target.value === "1024x768") {
+      width_change = 1024;
+      height_change = 768;
+    } else if (e.target.value === "768x1024") {
+      width_change = 768;
+      height_change = 1024;
+    } else if (e.target.value === "1600x900") {
+      width_change = 1600;
+      height_change = 900;
+    } else if (e.target.value === "any") {
+      width_change = 0;
+      height_change = 0;
+    }
+    this.setState({settings: { ...this.state.settings, width: width_change, height: height_change}})
   }
 
   changeMode = (id, e) => {
@@ -44,7 +93,6 @@ class App extends Component {
       }
       return card;
     })});
-    console.log(this.state);
   }
 
   changeFilter = (id, e) => {
@@ -54,7 +102,6 @@ class App extends Component {
       }
       return card;
     })});
-    console.log(this.state);
   }
 
   changeTerm = (id, e) => {
@@ -64,7 +111,6 @@ class App extends Component {
       }
       return card;
     })});
-    console.log(this.state);
   }
 
   changeOpacity = (id, e, newValue) => {
@@ -74,13 +120,11 @@ class App extends Component {
       }
       return card;
     })});
-    console.log(this.state);
   }
 
   delCard = (id) => {
     console.log(id + " deleted");
     this.setState({ cards: [...this.state.cards.filter(card =>  (card.id !== id) || !card.fadeOut)]});
-    console.log(this.state);
   }
 
   newCard = () => {
@@ -97,6 +141,7 @@ class App extends Component {
   }
 
   generateImage = async () => {
+    this.setState({settings: { ...this.state.settings, generating: true}})
     const response = await fetch('/api/generate', {
       method: 'POST',
       headers: {
@@ -109,6 +154,7 @@ class App extends Component {
       state.settings.b64src = string;
       return state;
     })
+    this.setState({settings: { ...this.state.settings, generating: false}})
   }
 
 
@@ -135,7 +181,13 @@ class App extends Component {
             delCard={this.delCard}
             newCard={this.newCard} 
             setFadeOut={this.setFadeOut}/>
-          <ImageMenu settings={this.state.settings} generateImage={this.generateImage}/>
+          <ImageMenu 
+            settings={this.state.settings} 
+            generateImage={this.generateImage}
+            changeSize={this.changeSize}
+            toggleFeatured={this.toggleFeatured}
+            randomizeTerms={this.randomizeTerms}
+            randomizeModes={this.randomizeModes}/>
       </div>
     )
   };
