@@ -1,6 +1,6 @@
 # Album Art Generator
 This is the project I made to learn Django and ReactJS.
-It generates album art by layering random images that are fetched from www.unsplash.com, a great website for creative commons photos.
+It generates interesting images by layering random images that are fetched from www.unsplash.com, a great website for creative commons photos.
 
 Uses bootstrap4 for various css styling. Includes firerobot image editor: https://scaleflex.github.io/filerobot-image-editor/
 
