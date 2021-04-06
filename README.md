@@ -8,4 +8,4 @@ Try it out: https://album-art-gen.herokuapp.com/
 Since the API is doing image processing on a free heroku server, it can be slow to load. Give it 10-30 seconds. 
 
 Example:
-![alt text](https://ibb.co/XWxxGbf)
+![alt text](https://i.ibb.co/YNBBV34/Screen-Shot-2021-04-06-at-3-29-55-PM.png)
